@@ -18,7 +18,7 @@ type PostBody struct {
 
 type Response struct {
 	Error string `json:"error,omitempty"`
-	URL   string `json:"url,omitempty"`
+	Data  string `json:"data,omitempty"`
 }
 
 func NewHandler(db map[string]string) http.Handler {
@@ -92,7 +92,7 @@ func handlePost(db map[string]string) http.HandlerFunc {
 		db[code] = body.URL
 		sendJSON(
 			w,
-			Response{URL: body.URL},
+			Response{Data: code},
 			http.StatusCreated,
 		)
 	}
