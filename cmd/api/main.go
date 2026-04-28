@@ -1,7 +1,7 @@
 package main
 
 import (
-	"goshort/api"
+	"goshort/internal/api"
 	"log/slog"
 	"net/http"
 	"os"
