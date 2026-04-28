@@ -1,13 +1,14 @@
 package api
 
 import (
+	"goshort/internal/store"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 )
 
-func NewHandler(db map[string]string) http.Handler {
+func NewHandler(store store.Store) http.Handler {
 
 	r := chi.NewMux()
 
@@ -17,8 +18,8 @@ func NewHandler(db map[string]string) http.Handler {
 
 	// Grupo de API
 	r.Route("/api", func(r chi.Router) {
-		r.Post("/shorten", handlePost(db))
-		r.Get("/{code}", handleGet(db))
+		r.Post("/shorten", handlePost(store))
+		r.Get("/{code}", handleGet(store))
 	})
 
 	return r

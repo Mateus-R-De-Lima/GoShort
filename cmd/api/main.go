@@ -2,10 +2,13 @@ package main
 
 import (
 	"goshort/internal/api"
+	"goshort/internal/store"
 	"log/slog"
 	"net/http"
 	"os"
 	"time"
+
+	"github.com/redis/go-redis/v9"
 )
 
 func main() {
@@ -17,9 +20,16 @@ func main() {
 }
 
 func run() error {
-	db := make(map[string]string)
+	rdb := redis.NewClient(&redis.Options{
+		Addr:     "localhost:6379",
+		Password: "", // no password set
+		DB:       0,  // use default DB
+	})
+	defer rdb.Close()
 
-	handler := api.NewHandler(db)
+	store := store.NewStore(rdb)
+
+	handler := api.NewHandler(store)
 
 	s := http.Server{
 		ReadTimeout:  10 * time.Second,
